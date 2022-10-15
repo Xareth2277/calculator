@@ -1,1 +1,1 @@
-# calculator
+Neon calculator for the Odin Project
