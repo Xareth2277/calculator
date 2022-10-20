@@ -1,17 +1,18 @@
 *, *::before, *::after {
     box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-weight: 700;
+    font-weight: 600;
 }
 
 body {
     padding: 0px;
     margin: 0px;
     background-color: black;
+    display: grid;
+    min-height: 100vh;
 }
 
 .calculator {
-    min-height: 100vh;
     display: grid;
     justify-content: center;
     align-content: center;
@@ -22,13 +23,24 @@ body {
 
 .calculator > button {
     cursor: pointer;
-    border: 0.25em solid red;
+
+    border: 0.15em solid white;
     border-radius: 2.5rem;
     background-color: black;
-    box-shadow: 0 0 0.5em red;
+    box-shadow: 
+        inset 0 0 1em hsl(217, 98%, 64%),
+        0 0 2em hsl(217, 98%, 64%);
+    
     color: white;
     font-size: 1.5em;
     text-align: center;
+    text-shadow: 0 0 1em hsl(217, 98%, 64%);
+}
+
+.calculator > .operator {
+    box-shadow: 
+        inset 0 0 1em hsl(356, 84%, 46%),
+        0 0 2em hsl(356, 84%, 46%);
 }
 
 .span-two {
@@ -37,16 +49,27 @@ body {
 
 .output {
     grid-column: 1 / -1;
-    font-size: 1.5em;
-    background-color: rgba(0, 0, 0, .75);
-    border: 0.25em solid red;
-    border-radius: 2.5rem;
-    box-shadow: 0 0 0.5em red;
+    margin-bottom: 1em;
+
+    font-size: 2em;
     color: white;
+    text-shadow: 0 0 1em hsl(356, 84%, 46%);
+    word-wrap: break-word;
+
+    background-color: black;
+    border: 0.15em solid white;
+    border-radius: 2.5rem;
+    box-shadow: 
+        inset 0 0 2em hsl(356, 84%, 46%), 
+        0 0 3em hsl(356, 84%, 46%);
+    padding: 0.75em 1.5em;
+    
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-end;
-    padding: 0.75em 1.5em;
-    word-wrap: break-word;
+}
+
+.previousNum {
+    font-size: 0.75em;
 }
