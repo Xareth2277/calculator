@@ -54,8 +54,11 @@ function deleteNum() {
 };
 
 function storeValue(value) {
-    console.log(value);
-    displayValue = displayValue + value;
+    if (displayValue === 0) {
+        displayValue = value;
+    } else {
+        displayValue = displayValue + value;
+    }
     currentNum.textContent = displayValue;
 };
 
