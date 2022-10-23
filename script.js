@@ -38,16 +38,18 @@ let currentOperator = null;
 function operate(button) {
     if (button.className === 'number') {
         storeValue(button.textContent);
-        calculate();
     } else if (button.value === 'ac') {
         allClear();
     } else if (button.value === 'del') {
         deleteNum();
     } else if (button.className === 'operator') {
+        calculate();
         outputOperator.textContent = button.textContent;
         if (button.value !== 'equals') {
             currentOperator = button.value;
         };
+        previousNum.textContent = oldValue;
+        currentNum.textContent = calc;
     };
     console.log(button);
     console.log(oldValue);
@@ -63,7 +65,6 @@ function calculate() {
         window[currentOperator]();  // calls operator function
         oldValue = calc;            // move calc into 'memory'
         newValue = 0;               // allows input of new number
-        currentNum.textContent = calc;
     };
 }
 
