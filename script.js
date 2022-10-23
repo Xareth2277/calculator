@@ -6,6 +6,10 @@
 // TOC
 // ==========================================================================
 
+// - DOM References
+// - Initial values
+// - Functions
+// - Event-Listeners
 
 // ==========================================================================
 // DOM References
@@ -14,11 +18,6 @@
 const currentNum = document.querySelector('.currentNum');
 const previousNum = document.querySelector('.previousNum');
 const outputOperator = document.querySelector('.outputOperator');
-// const numbers = document.querySelectorAll('.number');
-// const ac = document.querySelector('#ac');
-// const del = document.querySelector('#del');
-// const operators = document.querySelectorAll('.operator');
-
 const buttons = document.querySelectorAll('button');
 
 // ==========================================================================
@@ -28,7 +27,6 @@ const buttons = document.querySelectorAll('button');
 let newValue = 0;
 let oldValue = 0;
 let calc = 0;
-let history = 0;
 let currentOperator = null;
 
 // ==========================================================================
@@ -42,19 +40,16 @@ function operate(button) {
         allClear();
     } else if (button.value === 'del') {
         deleteNum();
+    } else if (button.value === 'equals') {
+        equals();
+        return;
     } else if (button.className === 'operator') {
         calculate();
         outputOperator.textContent = button.textContent;
-        if (button.value !== 'equals') {
-            currentOperator = button.value;
-        };
+        currentOperator = button.value;
         previousNum.textContent = oldValue;
         currentNum.textContent = calc;
     };
-    console.log(button);
-    console.log(oldValue);
-    console.log(newValue);
-    console.log(calc);
 };
 
 function calculate() {
@@ -113,6 +108,12 @@ function deleteNum() {
     currentNum.textContent = newValue;
 };
 
+function equals() {
+    previousNum.textContent = oldValue + outputOperator.textContent + newValue;
+    calculate();
+    outputOperator.textContent = '=';
+    currentNum.textContent = calc;
+}
 
 // ==========================================================================
 // Event-Listeners
