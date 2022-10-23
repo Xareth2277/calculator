@@ -6,73 +6,120 @@
 // TOC
 // ==========================================================================
 
+
 // ==========================================================================
 // DOM References
 // ==========================================================================
 
 const currentNum = document.querySelector('.currentNum');
-const numbers = document.querySelectorAll('.number');
-const ac = document.querySelector('#ac');
-const del = document.querySelector('#del');
+const previousNum = document.querySelector('.previousNum');
+const outputOperator = document.querySelector('.outputOperator');
+// const numbers = document.querySelectorAll('.number');
+// const ac = document.querySelector('#ac');
+// const del = document.querySelector('#del');
+// const operators = document.querySelectorAll('.operator');
+
+const buttons = document.querySelectorAll('button');
+
+// ==========================================================================
+// Initial values
+// ==========================================================================
+
+let newValue = 0;
+let oldValue = 0;
+let calc = 0;
+let history = 0;
+let currentOperator = null;
 
 // ==========================================================================
 // Functions
 // ==========================================================================
 
-function add(a, b) {
-    return a + b;
+function operate(button) {
+    if (button.className === 'number') {
+        storeValue(button.textContent);
+        calculate();
+    } else if (button.value === 'ac') {
+        allClear();
+    } else if (button.value === 'del') {
+        deleteNum();
+    } else if (button.className === 'operator') {
+        outputOperator.textContent = button.textContent;
+        if (button.value !== 'equals') {
+            currentOperator = button.value;
+        };
+    };
+    console.log(button);
+    console.log(oldValue);
+    console.log(newValue);
+    console.log(calc);
 };
 
-function subtract(a, b) {
-    return a - b;
+function calculate() {
+    if (currentOperator === null) {
+        oldValue = newValue;
+        newValue = 0;
+    } else {
+        window[currentOperator]();  // calls operator function
+        oldValue = calc;            // move calc into 'memory'
+        newValue = 0;               // allows input of new number
+        currentNum.textContent = calc;
+    };
+}
+
+function storeValue(value) {
+    if (newValue == 0) {
+        newValue = value;
+    } else {
+        newValue = newValue + value;
+    }
+    currentNum.textContent = newValue;
 };
 
-function multiply(a, b) {
-    return a * b;
+function add() {
+    calc = parseInt(oldValue) + parseInt(newValue);
 };
 
-function divide(a, b) {
-    return a / b;
+function subtract() {
+    calc = parseInt(oldValue) - parseInt(newValue);
 };
 
-function operate(operator, a, b) {
-    return operator(a, b);
+function multiply() {
+    calc = parseInt(oldValue) * parseInt(newValue);
+};
+
+function divide() {
+    calc = parseInt(oldValue) / parseInt(newValue);
 };
 
 function allClear() {
-    displayValue = 0;
-    currentNum.textContent = displayValue;
+    newValue = 0;
+    oldValue = 0;
+    calc = 0;
+    history = '';
+    currentNum.textContent = newValue;
+    previousNum.textContent = oldValue;
+    currentOperator = null;
+    outputOperator.textContent = '';
 };
 
 function deleteNum() {
-    if (displayValue.length <= 1) {
-        displayValue = 0;
-    } else {
-        displayValue = displayValue.slice(0, -1);
+    if (newValue.length <= 1) {
+        newValue = 0;
+    } else if (newValue.length > 1) {
+        newValue = newValue.slice(0, -1);
     }
-    currentNum.textContent = displayValue;
+    currentNum.textContent = newValue;
 };
 
-function storeValue(value) {
-    if (displayValue === 0) {
-        displayValue = value;
-    } else {
-        displayValue = displayValue + value;
-    }
-    currentNum.textContent = displayValue;
-};
 
 // ==========================================================================
 // Event-Listeners
 // ==========================================================================
 
-ac.addEventListener('click', allClear);
-
-del.addEventListener('click', deleteNum);
-
-numbers.forEach(number => number.addEventListener('click', () => {
-    storeValue(number.value);
+buttons.forEach(button => button.addEventListener('click', () => {
+    operate(button);
 }));
 
-let displayValue = '';
+
 

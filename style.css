@@ -79,8 +79,13 @@ body {
     padding: 0.75em 1.5em;
     
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
+    align-items: flex-end;
+}
+
+.outputNumbers {
+    display: flex;
+    flex-direction: column;
     align-items: flex-end;
 }
 
