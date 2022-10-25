@@ -28,13 +28,16 @@ let newValue = 0;
 let oldValue = 0;
 let calc = 0;
 let currentOperator = null;
+let decimalToggle = false;
 
 // ==========================================================================
 // Functions
 // ==========================================================================
 
 function operate(button) {
-    if (button.className === 'number') {
+    if (button.value === 'decimal') {
+        decimal(button.textContent);
+    } else if (button.className === 'number') {
         storeValue(button.textContent);
     } else if (button.value === 'ac') {
         allClear();
@@ -45,11 +48,16 @@ function operate(button) {
         return;
     } else if (button.className === 'operator') {
         calculate();
+        decimalToggle = false;
         outputOperator.textContent = button.textContent;
         currentOperator = button.value;
         previousNum.textContent = oldValue;
-        currentNum.textContent = calc;
+        currentNum.textContent = newValue;
     };
+    console.log(button);
+    console.log(oldValue);
+    console.log(newValue);
+    console.log(calc);
 };
 
 function calculate() {
@@ -58,10 +66,11 @@ function calculate() {
         newValue = 0;
     } else {
         window[currentOperator]();  // calls operator function
+        calc = Math.round(calc * 100) / 100;
         oldValue = calc;            // move calc into 'memory'
         newValue = 0;               // allows input of new number
     };
-}
+};
 
 function storeValue(value) {
     if (newValue == 0) {
@@ -73,26 +82,37 @@ function storeValue(value) {
 };
 
 function add() {
-    calc = parseInt(oldValue) + parseInt(newValue);
+    calc = parseFloat(oldValue) + parseFloat(newValue);
 };
 
 function subtract() {
-    calc = parseInt(oldValue) - parseInt(newValue);
+    calc = parseFloat(oldValue) - parseFloat(newValue);
 };
 
 function multiply() {
-    calc = parseInt(oldValue) * parseInt(newValue);
+    calc = parseFloat(oldValue) * parseFloat(newValue);
 };
 
 function divide() {
-    calc = parseInt(oldValue) / parseInt(newValue);
+    calc = parseFloat(oldValue) / parseFloat(newValue);
+};
+
+function decimal(dot) {
+    console.log('decimal');
+    if (decimalToggle == false) {
+        storeValue(dot);
+        decimalToggle = true;
+        return;
+    } else if (decimalToggle) {
+        return;
+    };
 };
 
 function allClear() {
     newValue = 0;
     oldValue = 0;
     calc = 0;
-    history = '';
+    decimalToggle = false;
     currentNum.textContent = newValue;
     previousNum.textContent = oldValue;
     currentOperator = null;
@@ -102,6 +122,7 @@ function allClear() {
 function deleteNum() {
     if (newValue.length <= 1) {
         newValue = 0;
+        decimalToggle = false;
     } else if (newValue.length > 1) {
         newValue = newValue.slice(0, -1);
     }
@@ -109,11 +130,17 @@ function deleteNum() {
 };
 
 function equals() {
-    previousNum.textContent = oldValue + outputOperator.textContent + newValue;
+    if (oldValue == 0 || newValue == 0) {
+        outputOperator.textContent = '='
+        previousNum.textContent = 0;
+        currentNum.textContent = oldValue;
+        return;
+    };
+    previousNum.textContent = `${oldValue} ${outputOperator.textContent} ${newValue}`;
     calculate();
     outputOperator.textContent = '=';
     currentNum.textContent = calc;
-}
+};
 
 // ==========================================================================
 // Event-Listeners
